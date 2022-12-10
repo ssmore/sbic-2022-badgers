@@ -1,0 +1,46 @@
+.banner {
+    height: 200px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    width: 100%;
+    padding: 0px;
+}
+
+.profile {
+  margin-top: -75px;
+
+}
+
+.profile-picture{
+  height: 150px !important;
+  width: 150px !important;
+}
+
+.small-break{
+  padding: 2px;
+}
+
+.medium-break{
+  padding: 10px;
+}
+
+.large-break{
+  padding: 15px;
+}
+
+.hr {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border: 0;
+  border-top: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+.company-logo{
+  height: 100px !important;
+  width: 100px !important;
+}
+
+.skills-logo{
+  height: 65px !important;
+  width: 65px !important;
+}
