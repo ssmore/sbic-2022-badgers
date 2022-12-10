@@ -1,0 +1,53 @@
+[
+  {
+  "kudosTitle":"Java Developer",
+  "imageUrl": "https://venturebeat.com/wp-content/uploads/2016/06/netflix-logo.png?w=1200&strip=all",
+  "description": "Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, ",
+  "sender": "someone",
+  "date" : "1/1/2022",
+  "type":"hard"
+
+  },
+  {
+    "kudosTitle":"Ruby Developer",
+    "imageUrl": "https://venturebeat.com/wp-content/uploads/2016/06/netflix-logo.png?w=1200&strip=all",
+    "description": "Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, ",
+    "sender": "someone",
+    "date" : "1/1/2022",
+    "type":"hard"
+  },
+  {
+    "kudosTitle":"Stakeholder Management",
+    "imageUrl": "https://venturebeat.com/wp-content/uploads/2016/06/netflix-logo.png?w=1200&strip=all",
+    "description": "Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, ",
+    "sender": "someone",
+    "date" : "1/1/2022",
+    "type":"Soft"
+  },
+  {
+    "kudosTitle":"Presentation",
+    "imageUrl": "https://venturebeat.com/wp-content/uploads/2016/06/netflix-logo.png?w=1200&strip=all",
+    "description": "Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, ",
+    "sender": "someone",
+    "date" : "1/1/2022",
+    "type":"Soft"
+  },
+  {
+    "kudosTitle":"Web Development",
+    "imageUrl": "https://venturebeat.com/wp-content/uploads/2016/06/netflix-logo.png?w=1200&strip=all",
+    "description": "Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, ",
+    "sender": "someone",
+    "date" : "1/1/2022",
+    "type":"Hard"
+  },
+  {
+    "kudosTitle":"Blockchain Development",
+    "imageUrl": "https://venturebeat.com/wp-content/uploads/2016/06/netflix-logo.png?w=1200&strip=all",
+    "description": "Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, ",
+    "sender": "someone",
+    "date" : "1/1/2022",
+    "type":"Hard"
+  }
+
+
+]

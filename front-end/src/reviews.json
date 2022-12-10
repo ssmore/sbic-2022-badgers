@@ -24,19 +24,19 @@
   {
     "type":"Powerpoint",
     "imageUrl": "https://venturebeat.com/wp-content/uploads/2016/06/netflix-logo.png?w=1200&strip=all",
-    "value":5,
+    "value":"100%",
     "reviews":6
   },
   {
     "type":"Presentation",
     "imageUrl": "https://venturebeat.com/wp-content/uploads/2016/06/netflix-logo.png?w=1200&strip=all",
-    "value":5,
+    "value":"75%",
     "reviews":9
   },
   {
     "type":"Ruby",
     "imageUrl": "https://venturebeat.com/wp-content/uploads/2016/06/netflix-logo.png?w=1200&strip=all",
-    "value":2,
+    "value":"66%",
     "reviews":9
   }
 
