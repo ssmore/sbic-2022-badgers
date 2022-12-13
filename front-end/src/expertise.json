@@ -3,6 +3,7 @@
   "title":"Software Engineer",
   "duration":"2 years 4 months",
   "jobCategory":"Software",
+  "skills":["Product Management","Stakeholder Alignment","Communication"],
   "imageUrl": "https://venturebeat.com/wp-content/uploads/2016/06/netflix-logo.png?w=1200&strip=all",
   "description": "Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus."
 
@@ -10,6 +11,7 @@
   {"title":"Product Manager 2",
   "duration":"2 years 4 months",
   "jobCategory":"Product",
+  "skills":["Product Management","Stakeholder Alignment","Java"],
   "imageUrl": "https://venturebeat.com/wp-content/uploads/2016/06/netflix-logo.png?w=1200&strip=all",
   "description": "C sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus."
 
@@ -18,6 +20,7 @@
   {"title":"Software Engineer 3",
   "duration":"2 years 4 months",
   "jobCategory":"Software",
+  "skills":["Product Management","Ruby","Communication"],
   "imageUrl": "https://venturebeat.com/wp-content/uploads/2016/06/netflix-logo.png?w=1200&strip=all",
   "description": "Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus."
 

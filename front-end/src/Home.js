@@ -4,11 +4,13 @@ import { useNavigate } from "react-router-dom";
 import banner from "./dexperts-banner.png";
 import profilepic from "./mayc.png";
 import "./dexpert.css";
+import badgersLogo from "./badges_logo.png"
 
 //data points
 import expertiseData from "./expertise.json";
 import reviewData from "./reviews.json";
 import kudosData from "./kudos.json";
+import skillsMapper from "./skillsmapper.json";
 
 import { ethers } from "ethers";
 
@@ -218,6 +220,7 @@ export const Home = () => {
 
   async function addExpertise(expertiseRow) {
     //console.log(JSON.stringify(expertiseRow))
+    var skills = expertiseRow.skills
     var element = (
       <div class="row align-items-center">
         <div class="col align-items-center">
@@ -225,19 +228,35 @@ export const Home = () => {
         </div>
         <div class="col-10">
           <div class="row">
-            <div class="col">
+            <div class="col-3">
+
               <p class="h5">
                 {" "}
                 {expertiseRow.title}
-                <span
-                  class="badge rounded-pill bg-primary"
-                  style={{ marginLeft: "15px" }}
-                >
-                  {expertiseRow.jobCategory}
-                </span>{" "}
-              </p>
+                </p>
+                </div>
+                <div class="col-6">
+
+                {skills.map(skillsTab =>  {if (skillsMapper['hard'].includes(skillsTab)) {
+          return <span
+            class="badge bg-dark m-1"
+          >
+            {skillsTab}
+          </span>;
+        } else {
+          return <span
+            class="badge bg-secondary m-1"
+          >
+            {skillsTab}
+          </span>;
+        }
+      } )}
+                <div>
+
+    </div>
+
             </div>
-            <div class="col-8 align-items-end" style={{ textAlign: "right" }}>
+            <div class="col align-items-end" style={{ textAlign: "right" }}>
               {expertiseRow.duration}
             </div>
           </div>
@@ -710,20 +729,15 @@ export const Home = () => {
     <>
       <header class="p-3 text-bg-dark fixed-top">
         <div class="container">
-          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+          <div class="d-flex flex-wrap align-items-center ">
             <a
               href="/"
-              class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none"
+              class="d-flex  mb-lg-0 text-white text-decoration-none"
             >
-              <svg
-                class="bi me-2"
-                width="40"
-                height="32"
-                role="img"
-                aria-label="Bootstrap"
-              ></svg>
+              <img class="logo-small" src={badgersLogo} alt="Logo" />
             </a>
-            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+            <div class="d-flex flex-wrap align-items-center ">
+            <form class="col-18 col-lg-auto  mb-lg-0 me-lg-3" role="search">
               <input
                 type="search"
                 class="form-control form-control-dark text-bg-dark"
@@ -731,31 +745,11 @@ export const Home = () => {
                 aria-label="Search"
               />
             </form>
+            </div>
 
-            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2  d-flex flex-row-reverse justify-content-end mb-md-0"></ul>
-            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2  d-flex flex-row-reverse justify-content-end mb-md-0"></ul>
 
-            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2  d-flex flex-row-reverse justify-content-end mb-md-0"></ul>
+            <ul class="nav col-12 col-lg-auto me-lg-auto  d-flex flex-row-reverse justify-content-end mb-md-0">
 
-            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2  d-flex flex-row-reverse justify-content-end mb-md-0">
-              <li>
-                <a
-                  href="#"
-                  class="nav-link px-2 text-secondary"
-                  style={{ marginLeft: "70px" }}
-                >
-                  Marketplace
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="nav-link px-2 text-white"
-                  style={{ marginLeft: "120px" }}
-                >
-                  My Community
-                </a>
-              </li>
             </ul>
 
             <div class="text-end">
@@ -822,15 +816,12 @@ export const Home = () => {
 
       <div class="medium-break"></div>
       <div class="d-flex justify-content-evenly">
-        <button type="button" class="btn btn-primary">
-          Product Manager
-        </button>
-        <button type="button" class="btn btn-dark">
-          Software Developer
-        </button>
+        <p class="h4">
+          @tthw
+        </p>
       </div>
 
-      <div class="medium-break"></div>
+
       <div class="container">
         <div class="row text-center">
           <div class="col" onClick={clickExpertise}>
@@ -848,7 +839,7 @@ export const Home = () => {
         </div>
       </div>
       </div>
-): (<div> Not Connected </div>)}
+): (<div class="white-box"> Not Connected </div>)}
       <div class="small-break"></div>
       {(isExpertiseTab &&isConnected) ? (
         <div class="container">
@@ -935,13 +926,25 @@ export const Home = () => {
                   />
                 </div>
 
+                <label for="exampleFormControlTextarea1" class="form-label">
+                  Type of Skill
+                </label>
                 <select class="form-select" aria-label="Default select example">
-                  <option disabled>Kudos Type</option>
-                  <option value="1">Ruby Development</option>
-                  <option value="2">Stakeholder Development</option>
-                  <option value="3">Software Engineering</option>
+                  <option disabled selected>Select Skill Type</option>
+                  <option value="hard">Hard</option>
+                  <option value="soft">Soft</option>
                 </select>
-
+                <div class="medium-break"></div>
+                <label for="exampleFormControlTextarea1" class="form-label">
+                  Kudo Type
+                </label>
+                <select class="form-select" aria-label="Default select example">
+                  <option disabled selected>Kudos Type</option>
+                  <option value="Ruby Development">Ruby Development</option>
+                  <option value="Stakeholder Development">Stakeholder Development</option>
+                  <option value="Software Engineering">Software Engineering</option>
+                </select>
+                <div class="medium-break"></div>
                 <div class="mb-3">
                   <label for="exampleFormControlTextarea1" class="form-label">
                     Description
