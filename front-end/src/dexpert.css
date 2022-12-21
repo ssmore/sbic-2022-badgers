@@ -82,3 +82,28 @@
   padding: 0px;
   margin: 0px;
 }
+.img-mid {
+  width:500px !important;
+  height:500px !important;
+  padding: 0px;
+  margin: 0px;
+}
+
+.img-small {
+  width:250px !important;
+  height:250px !important;
+  padding: 0px;
+  margin: 0px;
+}
+
+
+.box-register {
+
+    height: auto;
+
+    background: #FFFFFF;
+
+    border-radius: 5px;
+    padding:10px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}

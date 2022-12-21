@@ -48,6 +48,7 @@ export const Home = () => {
     try {
       if (!ethereum) {
         console.log("No blockchain wallet was found");
+        navigate("/login")
       }
 
       const accounts = await ethereum.request({
@@ -58,6 +59,7 @@ export const Home = () => {
       setConnectedStatus("Connected")
       console.log(accounts[0]);
     } catch (error) {
+      navigate("/login")
       console.log("Not Connected");
       console.log("Error" + error.message);
     }
@@ -727,78 +729,46 @@ export const Home = () => {
   }
   return (
     <>
+
       <header class="p-3 text-bg-dark fixed-top">
-        <div class="container">
-          <div class="d-flex flex-wrap align-items-center ">
-            <a
-              href="/"
-              class="d-flex  mb-lg-0 text-white text-decoration-none"
-            >
-              <img class="logo-small" src={badgersLogo} alt="Logo" />
-            </a>
-            <div class="d-flex flex-wrap align-items-center ">
-            <form class="col-18 col-lg-auto  mb-lg-0 me-lg-3" role="search">
-              <input
-                type="search"
-                class="form-control form-control-dark text-bg-dark"
-                placeholder="Search..."
-                aria-label="Search"
-              />
-            </form>
-            </div>
+        <div class="container" style={{padding:"0px",margin:"0px"}}>
+        <div class="row justify-content-between">
+        <div class="col">
+        <a
+          href="/"
+          class="d-flex  mb-lg-0 text-white text-decoration-none"
+        >
+          <img class="logo-small" src={badgersLogo} alt="Logo" />
+        </a>
+        </div>
+        <div class="col-md-6">
+        <form role="search">
+          <input
+            type="search"
+            class="form-control form-control-dark text-bg-light"
+            placeholder="Search..."
+            aria-label="Search"
+          />
+        </form>
 
+        </div>
+        <div class="col" align="right">
+          <button type="button" class="btn btn-outline-light me-2" onClick={connectWallet}>
+            {connectedStatus}
+          </button>
+        </div>
+        <div class="col-auto" align="right">
+        <img
+          src={profilepic}
+          alt="mdo"
+          width="32"
+          height="32"
+          class="rounded-circle"
+        />
+        </div>
 
-            <ul class="nav col-12 col-lg-auto me-lg-auto  d-flex flex-row-reverse justify-content-end mb-md-0">
+        </div>
 
-            </ul>
-
-            <div class="text-end">
-              <button type="button" class="btn btn-outline-light me-2" onClick={connectWallet}>
-                {connectedStatus}
-              </button>
-            </div>
-            <div class="dropdown text-end" style={{ marginLeft: "25px" }}>
-              <a
-                href="#"
-                class="d-block link-dark text-decoration-none dropdown-toggle"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <img
-                  src="https://github.com/mdo.png"
-                  alt="mdo"
-                  width="32"
-                  height="32"
-                  class="rounded-circle"
-                />
-              </a>
-              <ul class="dropdown-menu text-small">
-                <li>
-                  <a class="dropdown-item" href="#">
-                    New project...
-                  </a>
-                </li>
-                <li>
-                  <a class="dropdown-item" href="#">
-                    Settings
-                  </a>
-                </li>
-                <li>
-                  <a class="dropdown-item" href="#">
-                    Profile
-                  </a>
-                </li>
-                <li>
-                  <hr class="dropdown-divider" />
-                </li>
-                <li>
-                  <a class="dropdown-item" href="#">
-                    Sign out
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
         </div>
       </header>
       {isConnected ? (
@@ -816,10 +786,11 @@ export const Home = () => {
 
       <div class="medium-break"></div>
       <div class="d-flex justify-content-evenly">
-        <p class="h4">
-          @tthw
+        <p class="h5">
+          @<b>tthw</b>
         </p>
       </div>
+      <div class="small-break"></div>
 
 
       <div class="container">
