@@ -5,6 +5,7 @@ import banner from "./dexperts-banner.png";
 import profilepic from "./mayc.png";
 import "./dexpert.css";
 import badgersLogo from "./badges_logo.png"
+import lockedContent from "./restricted_content.png"
 
 //data points
 import expertiseData from "./expertise.json";
@@ -611,7 +612,7 @@ export const Home = () => {
     setExpertiseTitle(<b>Expertise & Skills</b>);
     setExpertiseTab(true);
     setKudosTab(false);
-    setKudosTitle("Dexperts Kudos");
+    setKudosTitle("Badges Wall");
     setReviewTab(false);
     setReviewsTitle("Reviews");
   }, [accountAddress]);
@@ -705,7 +706,7 @@ export const Home = () => {
     setExpertiseTab(true);
     setExpertiseTitle(<b>Expertise & Skills</b>);
     setKudosTab(false);
-    setKudosTitle("Dexperts Kudos");
+    setKudosTitle("Badges Wall");
     setReviewTab(false);
     setReviewsTitle("Reviews");
   }
@@ -714,7 +715,7 @@ export const Home = () => {
     setExpertiseTab(false);
     setExpertiseTitle("Expertise & Skills");
     setKudosTab(true);
-    setKudosTitle(<b>Dexperts Kudos</b>);
+    setKudosTitle(<b>Badges Wall</b>);
     setReviewTab(false);
     setReviewsTitle("Reviews");
   }
@@ -723,7 +724,7 @@ export const Home = () => {
     setExpertiseTab(false);
     setExpertiseTitle("Expertise & Skills");
     setKudosTab(false);
-    setKudosTitle("Dexperts Kudos");
+    setKudosTitle("Badges Wall");
     setReviewTab(true);
     setReviewsTitle(<b>Reviews</b>);
   }
@@ -863,6 +864,13 @@ export const Home = () => {
           <div class="medium-break"></div>
           <h5> Skills Score </h5>
           {skillsList}
+          <div class="medium-break"></div>
+          <h5> Analytics </h5>
+          <img
+            src={lockedContent}
+            class="card-img-top"
+            alt="..."
+          />
         </div>
       ) : (
         <div></div>
@@ -961,7 +969,7 @@ export const Home = () => {
             >
               <svg class="bi" width="30" height="24"></svg>
             </a>
-            <span class="mb-3 mb-md-0 text-muted">&copy; Dexperts</span>
+            <span class="mb-3 mb-md-0 text-muted">&copy; Badgers</span>
           </div>
 
           <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
