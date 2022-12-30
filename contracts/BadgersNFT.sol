@@ -12,13 +12,14 @@ contract BadgersNFT is ERC721Enumerable {
 
     constructor() ERC721("BadgersNFT", "BDG") {}
 
-    function mint(address recipient) public
+    function mint(address recipient, string tokenURI) public
         returns (uint256)
     {
         _idCounter.increment();
         uint256 tokenId = _idCounter.current();
         
         _safeMint(recipient, tokenId);
+        _setTokenURI(tokenId, tokenURI);
         return tokenId;
     }
 
