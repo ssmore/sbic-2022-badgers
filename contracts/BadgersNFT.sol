@@ -11,21 +11,28 @@ contract BadgersNFT is ERC721Enumerable, ERC721URIStorage {
     using Counters for Counters.Counter;
     Counters.Counter private _idCounter;
 
-    mapping(uint256 => string) public skillNameMap;
+    mapping(uint256 => string) public titleMap;
+    mapping(uint256 => string) public descMap;
+    mapping(uint256 => address) public senderMap;
+    mapping(uint256 => uint256) public dateMap;
 
     constructor() ERC721("BadgersNFT", "BDG") {}
 
-    function mint(address recipient, string memory skillName, string memory _tokenURI) public
-        returns (uint256)
+    function mint(address recipient, string memory title, string memory _tokenURI, string memory desc, address sender, uint256 date) public
+        returns (uint256 tokenId)
     {
         _idCounter.increment();
-        uint256 tokenId = _idCounter.current();
+        uint256 _tokenId = _idCounter.current();
         
-        _safeMint(recipient, tokenId);
+        _safeMint(recipient, _tokenId);
 
-        skillNameMap[tokenId] = skillName;
-        _setTokenURI(tokenId, _tokenURI);
-        return tokenId;
+        titleMap[_tokenId] = title;
+        descMap[_tokenId] = desc;
+        senderMap[_tokenId] = sender;
+        dateMap[_tokenId] = date;
+        _setTokenURI(_tokenId, _tokenURI);
+
+        return _tokenId;
     }
 
     function getTokensOfOwner(address owner) public view 
@@ -43,10 +50,10 @@ contract BadgersNFT is ERC721Enumerable, ERC721URIStorage {
         return tokenIds;
     }
 
-    function getSkillName(uint256 tokenId) public view
-        returns (string memory)
+    function getDetails(uint256 tokenId) public view
+        returns (string memory title, string memory _tokenURI, string memory desc, address sender, uint256 date)
     {
-        return skillNameMap[tokenId];
+        return (titleMap[tokenId], super.tokenURI(tokenId), descMap[tokenId], senderMap[tokenId], dateMap[tokenId]);
     }
 
     function _beforeTokenTransfer(address from, address to, uint256 tokenId, uint256 batchSize)
