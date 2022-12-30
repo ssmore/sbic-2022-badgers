@@ -6,11 +6,9 @@ const NFT_CONTRACT_ADDRESS = process.env.NFT_CONTRACT_ADDRESS;
 const contract = require("../../contracts/artifacts/BadgersNFT.json");
 const abi = contract.abi;
 
-async function getABI() {
-    return abi;
-}
+const signer ; // TODO
 
-async function awardBadge(abi, signer, recipient, skillName, tokenURI) {
+async function awardBadge(recipient, skillName, tokenURI) {
     const nftContract = new ethers.Contract(NFT_CONTRACT_ADDRESS, abi, signer);
     const txn = await nftContract.mint(recipient, skillName, tokenURI);
     const txnReceipt = await txn.wait();
