@@ -5,6 +5,7 @@ import banner from "./dexperts-banner.png";
 import profilepic from "./mayc.png";
 import "./dexpert.css";
 import badgersLogo from "./badges_logo.png"
+import badgersNamedLogo from "./logo_with_name.png"
 import lockedContent from "./restricted_content.png"
 
 //data points
@@ -72,7 +73,9 @@ export const Home = () => {
     var element = (
       <div class="row align-items-center">
         <div class="col align-items-center">
+
           <img class="company-logo" src={testimonialRow.imageUrl} />
+
         </div>
         <div class="col-10">
           <div class="row">
@@ -615,6 +618,7 @@ export const Home = () => {
     setKudosTitle("Badges Wall");
     setReviewTab(false);
     setReviewsTitle("Reviews");
+    setIsKudoOpen(false);
   }, [accountAddress]);
 
   useEffect(() => {
@@ -734,12 +738,13 @@ export const Home = () => {
       <header class="p-3 text-bg-dark fixed-top">
         <div class="container" style={{padding:"0px",margin:"0px"}}>
         <div class="row justify-content-between">
-        <div class="col">
+        <div class="col align-middle">
         <a
           href="/"
           class="d-flex  mb-lg-0 text-white text-decoration-none"
         >
-          <img class="logo-small" src={badgersLogo} alt="Logo" />
+          <img class="logo-small" src={badgersNamedLogo} alt="Logo" />
+
         </a>
         </div>
         <div class="col-md-6">
@@ -834,7 +839,7 @@ export const Home = () => {
                 class="btn btn-primary float-end"
                 onClick={toggleOpenKudo}
               >
-                Send Kudos
+                Send Badges
               </button>
             </div>
           </div>
@@ -915,10 +920,10 @@ export const Home = () => {
                 </select>
                 <div class="medium-break"></div>
                 <label for="exampleFormControlTextarea1" class="form-label">
-                  Kudo Type
+                  Badges Type
                 </label>
                 <select class="form-select" aria-label="Default select example">
-                  <option disabled selected>Kudos Type</option>
+                  <option disabled selected></option>
                   <option value="Ruby Development">Ruby Development</option>
                   <option value="Stakeholder Development">Stakeholder Development</option>
                   <option value="Software Engineering">Software Engineering</option>
@@ -937,7 +942,7 @@ export const Home = () => {
 
                 <div class="mb-3">
                   <label for="formFileSm" class="form-label">
-                    Kudos Image
+                    Badge Image (Optional)
                   </label>
                   <input
                     class="form-control form-control-sm"

@@ -1,4 +1,5 @@
 import badgersLogo from "./badges_logo.png"
+import badgersNamedLogo from "./logo_with_name.png"
 import people from "./people.png";
 import { useNavigate } from "react-router-dom";
 import React, {useEffect} from "react";
@@ -45,7 +46,7 @@ export const Login = () =>{
       href="/"
       class="d-flex  mb-lg-0 text-white text-decoration-none"
     >
-      <img class="logo-small" src={badgersLogo} alt="Logo" />
+      <img class="logo-small" src={badgersNamedLogo} alt="Logo" />
     </a>
     </div>
 
