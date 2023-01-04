@@ -8,10 +8,31 @@ const abi = contract.abi;
 
 const signer ; // TODO
 
-async function awardBadge(recipient, skillName, tokenURI) {
+async function getContract() {
     const nftContract = new ethers.Contract(NFT_CONTRACT_ADDRESS, abi, signer);
-    const txn = await nftContract.mint(recipient, skillName, tokenURI);
+    return nftContract;
+}
+
+async function awardBadge(contract, recipient, title, uri, desc, sender) {
+    const date = Date.now();
+    const txn = await contract.safeMint(recipient, title, uri, desc, sender, date);
     const txnReceipt = await txn.wait();
 
     return txnReceipt.status == 1;
+}
+
+async function getTokensOfOwner(contract, address) {
+    const tokens = await contract.getTokensOfOwner(address);
+    return tokens.map(id => parseInt(id, 10));
+}
+
+async function getTokenDetails(contract, tokenId) {
+    const details = await contract.getTokenDetails(tokenId);
+    return {
+        "title": details[0],
+        "image": details[1],
+        "description": details[2],
+        "sender": details[3], 
+        "date": (new Date (parseInt(details[4].toString(), 10))).toISOString()
+    }
 }

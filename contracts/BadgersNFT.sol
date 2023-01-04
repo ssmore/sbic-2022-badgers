@@ -5,9 +5,10 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract BadgersNFT is ERC721Enumerable, ERC721URIStorage {
+contract BadgersNFT is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private _idCounter;
 
@@ -18,21 +19,17 @@ contract BadgersNFT is ERC721Enumerable, ERC721URIStorage {
 
     constructor() ERC721("BadgersNFT", "BDG") {}
 
-    function mint(address recipient, string memory title, string memory _tokenURI, string memory desc, address sender, uint256 date) public
-        returns (uint256 tokenId)
-    {
+    function safeMint(address to, string memory title, string memory uri, string memory desc, address sender, uint256 date) public onlyOwner {
+        uint256 tokenId = _idCounter.current();
         _idCounter.increment();
-        uint256 _tokenId = _idCounter.current();
-        
-        _safeMint(recipient, _tokenId);
 
-        titleMap[_tokenId] = title;
-        descMap[_tokenId] = desc;
-        senderMap[_tokenId] = sender;
-        dateMap[_tokenId] = date;
-        _setTokenURI(_tokenId, _tokenURI);
+        _safeMint(to, tokenId);
 
-        return _tokenId;
+        titleMap[tokenId] = title;
+        descMap[tokenId] = desc;
+        senderMap[tokenId] = sender;
+        dateMap[tokenId] = date;
+        _setTokenURI(tokenId, uri);
     }
 
     function getTokensOfOwner(address owner) public view 
@@ -50,12 +47,13 @@ contract BadgersNFT is ERC721Enumerable, ERC721URIStorage {
         return tokenIds;
     }
 
-    function getDetails(uint256 tokenId) public view
+    function getTokenDetails(uint256 tokenId) public view
         returns (string memory title, string memory _tokenURI, string memory desc, address sender, uint256 date)
     {
         return (titleMap[tokenId], super.tokenURI(tokenId), descMap[tokenId], senderMap[tokenId], dateMap[tokenId]);
     }
-
+    
+    // From Contracts Wizard https://docs.openzeppelin.com/contracts/4.x/wizard
     function _beforeTokenTransfer(address from, address to, uint256 tokenId, uint256 batchSize)
         internal
         override(ERC721, ERC721Enumerable)
