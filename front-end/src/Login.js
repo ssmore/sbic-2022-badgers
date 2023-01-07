@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { ethers } from 'ethers';
 import  contract from "./artifacts/BadgersProfile.json"
+import completed from "./completed.png"
 
 
 export const Login = () =>{
@@ -15,11 +16,20 @@ export const Login = () =>{
   const [isRegistrationTabOpened, setIsRegistrationTabOpened] = useState(false)
   const [registrationName, setRegistrationName]= useState("")
   const [registrationImage, setRegistrationImage] = useState("")
+  const [isSuccessSubmitted, setIsSuccessSubmitted] = useState(false)
   const [isAlert, setIsAlert]=useState(false)
   const [alertMessage, setAlertMessage] = useState("")
+  const [statusLink,setStatusLink] = useState("https://www.google.com")
 
   const toggleResgistrationTab = () => {
     setIsRegistrationTabOpened(!isRegistrationTabOpened);
+    setRegistrationName("")
+    setRegistrationImage("")
+    setIsAlert(false)
+    //console.log("kudostate" + isKudoOpen);
+  };
+  const toggleSuccessSubmitted = () => {
+    setIsSuccessSubmitted(!isSuccessSubmitted);
     setRegistrationName("")
     setRegistrationImage("")
     setIsAlert(false)
@@ -65,6 +75,9 @@ export const Login = () =>{
     try{
       const profileCreateTxn = await contractProfile.createProfile(registrationName,registrationImage).then(transaction =>{
         console.log('View on Etherscan at: https://goerli.etherscan.io/tx/' + transaction.hash)
+        setStatusLink("https://goerli.etherscan.io/tx/" + transaction.hash)
+        setIsRegistrationTabOpened(false)
+        setIsSuccessSubmitted(true)
       })
     }catch(e){
       setAlertMessage("Something,somewhere went wrong. Please try again")
@@ -135,6 +148,7 @@ export const Login = () =>{
 
     connectWallet()
     setIsRegistrationTabOpened(false)
+    setIsSuccessSubmitted(false)
 
 
 
@@ -328,6 +342,41 @@ export const Login = () =>{
     </div>
 
   </div>):(<div></div>)}
+
+  {isSuccessSubmitted ? (<div>
+    <div class="container">
+    <div>
+      <div class="box-success">
+
+      <div class="row">
+        <div class="col align-self-end">
+          <button
+            type="button"
+            class="btn-close float-end"
+            onClick={toggleSuccessSubmitted}
+          ></button>
+        </div>
+      </div>
+
+      <div>
+        <img class="success-image" src={completed} />
+
+      </div>
+      <div class="large-break"></div>
+      <h5 align="center">
+        Congratulations! <div class="small-break"></div>Your Profile Creation has been initialized
+      </h5>
+      <div class="small-break"></div>
+      <p> <small> <i> It may take up to 2 mins to be completed. You can check your progress <a href={statusLink} target="_blank"> here </a> </i> </small> </p>
+
+      </div>
+      </div>
+      </div>
+
+      </div>):(<div></div>)}
+
+
+
   </div>
   </>
 }
