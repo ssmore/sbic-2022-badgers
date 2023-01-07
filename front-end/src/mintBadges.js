@@ -43,6 +43,7 @@ export async function sendBadgesNFT(receipent,title,imageURL,desc,sender,date){
 
 }
 
+
 /*
 mintNFT("0x5f3A894B5C1e7bFF115D302F2034ae88A27C9840",tokenUri)
     .then(() => process.exit(0))

@@ -2,14 +2,101 @@ import badgersLogo from "./badges_logo.png"
 import badgersNamedLogo from "./logo_with_name.png"
 import people from "./people.png";
 import { useNavigate } from "react-router-dom";
-import React, {useEffect} from "react";
+import { useState, useEffect } from "react";
 import { ethers } from 'ethers';
-import  contract from "./artifacts/BadgersProfile.json" // TODO: Deploy contract via Remix and get artifact
-import * as utils from "./contractMethods"
+import  contract from "./artifacts/BadgersProfile.json"
+
 
 export const Login = () =>{
 
   const navigate = useNavigate();
+
+  const PROFILE_CONTRACT_ADDRESS = "0xb3152bc3f1a792c64be1ebf590b1299270d57612"
+  const [isRegistrationTabOpened, setIsRegistrationTabOpened] = useState(false)
+  const [registrationName, setRegistrationName]= useState("")
+  const [registrationImage, setRegistrationImage] = useState("")
+  const [isAlert, setIsAlert]=useState(false)
+  const [alertMessage, setAlertMessage] = useState("")
+
+  const toggleResgistrationTab = () => {
+    setIsRegistrationTabOpened(!isRegistrationTabOpened);
+    setRegistrationName("")
+    setRegistrationImage("")
+    setIsAlert(false)
+    //console.log("kudostate" + isKudoOpen);
+  };
+  function updateName(event){
+    setRegistrationName(event.target.value)
+    console.log(registrationName)
+  }
+  function updateImageLink(event){
+    setRegistrationImage(event.target.value)
+
+
+  }
+
+  function registerProfile () {
+    setIsAlert(false)
+    if(registrationName==""||registrationImage==""){
+      console.log("empty values")
+      setAlertMessage("Empty Fields. Please fill them up")
+      setIsAlert(true)
+      return
+    }
+
+
+
+    console.log(registrationName)
+    console.log(registrationImage)
+    addProfile(registrationName,registrationImage)
+  };
+
+  async function addProfile(registrationName,registrationImage){
+    const abi = contract.abi;
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const signer = provider.getSigner();
+    const contractProfile = new ethers.Contract(PROFILE_CONTRACT_ADDRESS,abi,signer)
+
+    const params = {
+      displayName: registrationName,
+      imageURI: registrationImage
+    }
+
+    try{
+      const profileCreateTxn = await contractProfile.createProfile(registrationName,registrationImage).then(transaction =>{
+        console.log('View on Etherscan at: https://goerli.etherscan.io/tx/' + transaction.hash)
+      })
+    }catch(e){
+      setAlertMessage("Something,somewhere went wrong. Please try again")
+      setIsAlert(true)
+      console.log(e)
+    }
+    /*
+    const signerAddress = await signer.getAddress();
+
+    let profileCreateTxn = await erc20.createProfile(registrationName,registrationImage)
+    await profileCreateTxn.wait()
+    console.log(`Profile is created! Check it out at: https://goerli.etherscan.io/tx/${profileCreateTxn.hash}`)
+    */
+  }
+
+
+
+  async function getDetails(){
+
+
+    const abi = contract.abi;
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const erc20 = new ethers.Contract(PROFILE_CONTRACT_ADDRESS,abi,provider)
+    const signer = await provider.getSigner();
+    const signerAddress = await signer.getAddress();
+    const details = await erc20.userMap(signerAddress)
+    //console.log(details)
+
+    return [details.name,details.image]
+  }
+
+
 
   async function connectWallet() {
     const { ethereum } = window;
@@ -27,6 +114,14 @@ export const Login = () =>{
       //setConnectedStatus("Connected")
       console.log(accounts[0]);
       //navigate("/")
+      var details= await getDetails()
+
+      console.log("name is" + details[0])
+      console.log("image is" + details[1])
+
+      if(details[0] != null && details[0] != undefined && details[0] != "" && details[1] != null && details[1] != undefined && details[1] != ""){
+        navigate("/")
+      }
 
     } catch (error) {
       console.log("Not Connected");
@@ -34,17 +129,20 @@ export const Login = () =>{
     }
   }
 
+
+
   useEffect (() =>{
 
     connectWallet()
-    utils.getDetails()
+    setIsRegistrationTabOpened(false)
+
 
 
   },[])
 
   return <>
 
-  <header class="p-3 text-bg-dark fixed-top">
+    <header class="p-3 text-bg-dark fixed-top d-flex justify-content-center">
     <div class="container" style={{padding:"0px",margin:"0px"}}>
     <div class="row d-flex justify-content-around">
     <div class="col">
@@ -86,12 +184,36 @@ export const Login = () =>{
   <div class="p-2 bd-highlight col">
   <div class="row">
   <div class="box-register">
-  <div class="col-sm">
-<img class="img-small" src={badgersLogo} alt="Logo" />
-  </div>
-  <div class="col-sm">
-  Join Us Today
-  </div>
+  <div class="row align-items-center">
+  <div class="col">
+    <img class="img-small" src={badgersLogo} />
+    </div>
+      <div class="col-7">
+      <div class="row">
+      <h5>Why not, join us today?</h5>
+
+      </div>
+      <div class="row">
+      <div class="col-5">
+    <div class="medium-break"></div>
+      <button
+        type="button"
+        class="btn btn-primary btn-sm"
+        onClick={toggleResgistrationTab}
+      >
+        Register
+      </button>
+      </div>
+      </div>
+
+      </div>
+
+    <p><small> <i>If you do not have a metamask plugin or unsure what and how to use it. Click <a href="https://consensys.net/blog/metamask/how-to-use-the-browser-buy-eth-and-send-transactions-on-metamask-mobile/">here</a> for an interesting article to get you started. </i></small></p>
+    </div>
+
+
+
+
   </div>
   </div>
 </div>
@@ -129,6 +251,83 @@ export const Login = () =>{
     </ul>
   </footer>
 </div>
+{isRegistrationTabOpened ? (<div>
+  <div class="container">
+  <div>
+    <div class="box-success">
+
+    <div class="row">
+      <div class="col align-self-end">
+        <button
+          type="button"
+          class="btn-close float-end"
+          onClick={toggleResgistrationTab}
+        ></button>
+      </div>
+    </div>
+
+
+    <h5 class="modal-title"> Registration</h5>
+
+    <hr />
+    {isAlert ? (<div class="alert alert-danger" role="alert">
+    {alertMessage}
+  </div>):(<div></div>)}
+
+    <form>
+      <div class="mb-3">
+        <label for="recipient" class="form-label">
+
+          <h6>Registration Name</h6>
+
+
+          <small><i> This would be your display name</i> </small>
+
+        </label>
+        <input
+          type="email"
+          class="form-control"
+          onChange={updateName}
+
+        />
+
+
+
+      </div>
+      <div class="medium-break"></div>
+      <div class="mb-3">
+        <label for="recipient" class="form-label">
+
+          <h6>Image URL/IPFS</h6>
+
+
+          <small><i>Looking for your image IPFS? Follow this <a href="https://medium.com/coinmonks/how-to-find-your-nft-on-ipfs-e51bc5e7c8a1" target="_blank">guide</a></i> </small>
+
+        </label>
+        <input
+          onChange={updateImageLink}
+          class="form-control"
+
+
+        />
+
+
+
+
+      </div>
+      <button
+        type="button"
+        onClick={registerProfile}
+        class="btn btn-primary"
+      >
+        Register
+      </button>
+      </form>
+    </div>
+    </div>
+    </div>
+
+  </div>):(<div></div>)}
   </div>
   </>
 }

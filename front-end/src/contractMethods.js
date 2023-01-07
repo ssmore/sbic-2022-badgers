@@ -13,8 +13,8 @@ export async function getDetails(){
   const signerAddress = await signer.getAddress();
   const details = await erc20.userMap(signerAddress)
   //console.log(details)
-  //console.log(details.name)
-  //console.log(details.image)
+  console.log("name"+details.name)
+  console.log("image"+details.image)
   return [details.name,details.image]
 }
 

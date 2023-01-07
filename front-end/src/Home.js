@@ -8,6 +8,8 @@ import "./dexpert.css";
 import badgersLogo from "./badges_logo.png"
 import badgersNamedLogo from "./logo_with_name.png"
 import lockedContent from "./restricted_content.png"
+import completed from "./completed.png"
+import errorImg from "./error.png"
 
 //data points
 import expertiseData from "./expertise.json";
@@ -45,6 +47,10 @@ export const Home = () => {
   const [isReviewTab, setReviewTab] = useState();
 
   const [isKudoOpen, setIsKudoOpen] = useState(false);
+  const [isKudoSuccessOpen, setIsKudoSuccessOpen] = useState(false)
+
+  const [isKudoErrorOpen, setIsKudoErrorOpen] = useState(false)
+  const [errorMsg, setErrorMsg] = useState("Something, somewhere went wrong")
 
 
   const [profileName,setProfileName] = useState("tthx")
@@ -73,6 +79,10 @@ export const Home = () => {
 
   }
 
+  function profileMaps(recipientInput){
+
+  }
+
   function updateBadgesType(event){
 
     var receivedBadgeType = event.target.value
@@ -85,25 +95,58 @@ export const Home = () => {
     setDescriptionBadge(event.target.value)
   }
 
-  function sendBadges(){
+  async function sendBadges(){
     if(receipent==="" || badgeType==="" || descriptionBadge === ""){
       console.log("fields empty")
+      setErrorMsg("Empty Fields")
+      setIsKudoErrorOpen(true)
+
       return
     }
 
 
-    console.log("receipent" + receipent)
+
+    var ethAddress = profileMapper[receipent]
+    var toAddress = receipent
+
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const signer = await provider.getSigner();
+    const signerAddress = await signer.getAddress();
+
+    var fromAddress = signerAddress
+    var currentDate = Date.now()
+
+    if(ethAddress != null && ethAddress != "" && ethAddress != undefined){
+      //console.log(ethAddress)
+      toAddress = ethAddress
+    }
+
+    if(!(ethers.utils.isAddress(toAddress))){
+      setErrorMsg("Please input a valid address or recipient name")
+      setIsKudoErrorOpen(true)
+      return
+    }
+
+    /*
+    console.log("receipent" + toAddress)
     console.log("badgeType" + badgeType)
     console.log("descriptionBadge" + descriptionBadge)
     console.log(badgeMapper[badgeType])
+    */
     var badgeURL = badgeMapper[badgeType]
     setBadgeImageURL(badgeURL)
+    /*
     console.log(badgeImageURL)
-
-    var toAddress = "0x13c3c91BFf390946C08E6992A62C00532c7b33f9"
-    var fromAddress = "0xa79db0f92327216f2fc196fde7376d5B1435A223"
-    var currentDate = Date.now()
+    */
+    try {
     sendBadgesNFT(toAddress,badgeType,badgeImageURL,descriptionBadge,fromAddress,currentDate)
+
+    setIsKudoOpen(false)
+    setIsKudoSuccessOpen(true)
+  }catch(e){
+    setErrorMsg("Something,somewhere went wrong")
+    setIsKudoErrorOpen(true)
+  }
 
 
   }
@@ -113,17 +156,27 @@ export const Home = () => {
     console.log("kudostate" + isKudoOpen);
   };
 
+  const toggleIsKudoSuccess = () => {
+    setIsKudoSuccessOpen(!isKudoSuccessOpen);
+    //console.log("kudostate" + isKudoOpen);
+  };
+
+  const toggleIsKudoError = () => {
+    setIsKudoErrorOpen(!isKudoErrorOpen);
+    //console.log("kudostate" + isKudoOpen);
+  };
+
 
   async function getDetails(){
 
-
+    try{
     const abi = contract.abi;
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     const erc20 = new ethers.Contract(PROFILE_CONTRACT_ADDRESS,abi,provider)
     const signer = await provider.getSigner();
     const signerAddress = await signer.getAddress();
     const details = await erc20.userMap(signerAddress)
-    //console.log(details)
+    console.log("WHYYYYYYYYYYY")
     //console.log(details.name)
     //console.log(details.image)
     //console.log("profilename" + details.name)
@@ -133,6 +186,15 @@ export const Home = () => {
     if((details.image !=null && details.image!="")){
       setProfilePicture(details.image)
     }
+
+    if(details.name == "" || details.image==""){
+        navigate("/login")
+    }
+  }catch(e){
+    //console.log(e)
+  }
+
+
   }
 
 
@@ -380,15 +442,15 @@ return unique
       addressToName[profileMapper[key]] = key
     }
 
-    console.log(JSON.stringify(addressToName))
+    //console.log(JSON.stringify(addressToName))
 
     for (let i = 0; i < reviews.length; i++) {
       //console.log("i called it" + i);
-      console.log(reviews[i].reviewer)
+      //console.log(reviews[i].reviewer)
       var shortenName = addressToName[reviews[i].reviewer]
 
       if(shortenName != null && shortenName != "" && shortenName != undefined){
-        console.log(shortenName)
+        //console.log(shortenName)
 
         reviews[i].reviewer = shortenName
       }
@@ -988,6 +1050,8 @@ return unique
     setReviewTab(false);
     setReviewsTitle("Reviews");
     setIsKudoOpen(false);
+    setIsKudoSuccessOpen(false);
+    setIsKudoErrorOpen(false);
   }, [accountAddress]);
 
   useEffect(() => {
@@ -1104,7 +1168,7 @@ return unique
   return (
     <>
 
-      <header class="p-3 text-bg-dark fixed-top">
+      <header class="p-3 text-bg-dark fixed-top d-flex justify-content-center">
         <div class="container" style={{padding:"0px",margin:"0px"}}>
         <div class="row justify-content-between">
         <div class="col align-middle">
@@ -1264,7 +1328,7 @@ return unique
                 </div>
               </div>
 
-              <h5 class="modal-title"> Send Kudos</h5>
+              <h5 class="modal-title"> Send Badgers</h5>
               <hr />
               <form>
                 <div class="mb-3">
@@ -1279,15 +1343,8 @@ return unique
                   />
                 </div>
 
-                <label for="exampleFormControlTextarea1" class="form-label">
-                  Type of Skill
-                </label>
-                <select class="form-select" aria-label="Default select example" onChange={updateBadges}>
-                  <option disabled selected>Select Skill Type</option>
-                  <option value="hard" >Hard</option>
-                  <option value="soft">Soft</option>
-                </select>
-                <div class="medium-break"></div>
+
+
                 <label for="exampleFormControlTextarea1" class="form-label">
                   Badges Type
                 </label>
@@ -1329,6 +1386,70 @@ return unique
       ) : (
         <div></div>
       )}
+
+      {isKudoSuccessOpen ? (<div>
+        <div class="container">
+        <div>
+          <div class="box-success">
+
+          <div class="row">
+            <div class="col align-self-end">
+              <button
+                type="button"
+                class="btn-close float-end"
+                onClick={toggleIsKudoSuccess}
+              ></button>
+            </div>
+          </div>
+
+          <div>
+            <img class="success-image" src={completed} />
+
+          </div>
+          <div class="large-break"></div>
+          <h5 align="center">
+            Badge has been sent to {receipent}
+          </h5>
+          <div class="medium-break"></div>
+          <p> <small> <i> It may take up to 2 mins to be reflected in {receipent} wall </i> </small> </p>
+
+          </div>
+          </div>
+          </div>
+
+          </div>):(<div></div>)}
+
+            {isKudoErrorOpen ? (<div>
+              <div class="container">
+              <div>
+                <div class="box-success">
+                <div class="row">
+                  <div class="col align-self-end">
+                    <button
+                      type="button"
+                      class="btn-close float-end"
+                      onClick={toggleIsKudoError}
+                    ></button>
+                  </div>
+                </div>
+                <div class="row align-items-center">
+                <div class="col">
+                  <img class="company-logo" src={errorImg} />
+                  </div>
+                  <div class="col-9">
+                  {errorMsg}
+                  </div>
+                  </div>
+
+
+                </div>
+
+                </div>
+                </div>
+
+
+              </div>
+            ):(<div></div>)}
 
       <div class="container">
         <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
