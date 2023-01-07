@@ -2,15 +2,11 @@ import { ethers } from "ethers";
 
 require("dotenv").config()
 const PROFILE_CONTRACT_ADDRESS = process.env.PROFILE_CONTRACT_ADDRESS;
-const ADMIN_WALLET_KEY = process.env.ADMIN_WALLET_KEY;
 
 const contract = require("../../contracts/artifacts/BadgersProfile.json");
 const abi = contract.abi;
 
-const provider = new ethers.providers.EtherscanProvider("goerli");
-const signer = new ethers.Wallet(ADMIN_WALLET_KEY, provider);
-
-async function getContract() {
+async function getContract(signer) {
     const profileContract = new ethers.Contract(PROFILE_CONTRACT_ADDRESS, abi, signer);
     return profileContract;
 }

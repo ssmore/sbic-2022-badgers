@@ -8,10 +8,15 @@ const contract = require("../../contracts/artifacts/BadgersNFT.json");
 const abi = contract.abi;
 
 const provider = new ethers.providers.EtherscanProvider("goerli");
-const signer = new ethers.Wallet(ADMIN_WALLET_KEY, provider);
+const adminSigner = new ethers.Wallet(ADMIN_WALLET_KEY, provider);
 
-async function getContract() {
-    const nftContract = new ethers.Contract(NFT_CONTRACT_ADDRESS, abi, signer);
+async function getAdminContract() {
+    const nftContract = new ethers.Contract(NFT_CONTRACT_ADDRESS, abi, adminSigner);
+    return nftContract;
+}
+
+async function getContract(signer) {
+    const nftContract = new ethers.Contract(PROFILE_CONTRACT_ADDRESS, abi, signer);
     return nftContract;
 }
 
