@@ -16,14 +16,14 @@ async function getContract() {
 async function createProfile(contract, displayName, image) {
     const txn = await contract.createProfile(displayName, image);
     const txnReceipt = await txn.wait();
-    
+
     return txnReceipt.status == 1;
 }
 
 async function addExperience(contract, company, title, startDate, endDate, category, image, description) {
     const txn = await contract.addExperience(company, title, startDate, endDate, category, image, description);
     const txnReceipt = await txn.wait();
-    
+
     return txnReceipt.status == 1;
 }
 
@@ -62,14 +62,14 @@ async function getExperiencesOfUser(contract, user) {
 async function addBadgeToExperience(contract, user, expIdx, tokenId) {
     const txn = await contract.addBadgeToExperience(user, expIdx, tokenId);
     const txnReceipt = await txn.wait();
-    
+
     return txnReceipt.status == 1;
 }
 
 async function addReview(contract, recipient, image, desc) {
     const txn = await contract.addReview(recipient, image, desc);
     const txnReceipt = await txn.wait();
-    
+
     return txnReceipt.status == 1;
 }
 

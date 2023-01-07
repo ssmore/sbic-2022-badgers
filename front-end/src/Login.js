@@ -3,8 +3,12 @@ import badgersNamedLogo from "./logo_with_name.png"
 import people from "./people.png";
 import { useNavigate } from "react-router-dom";
 import React, {useEffect} from "react";
+import { ethers } from 'ethers';
+import  contract from "./artifacts/BadgersProfile.json" // TODO: Deploy contract via Remix and get artifact
+import * as utils from "./contractMethods"
 
 export const Login = () =>{
+
   const navigate = useNavigate();
 
   async function connectWallet() {
@@ -33,6 +37,8 @@ export const Login = () =>{
   useEffect (() =>{
 
     connectWallet()
+    utils.getDetails()
+
 
   },[])
 

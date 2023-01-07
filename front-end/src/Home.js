@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import {sendBadgesNFT} from "./mintBadges.js"
 
 import banner from "./dexperts-banner.png";
 import profilepic from "./mayc.png";
@@ -11,10 +12,16 @@ import lockedContent from "./restricted_content.png"
 //data points
 import expertiseData from "./expertise.json";
 import reviewData from "./reviews.json";
+import skillsData from "./skills.json";
 import kudosData from "./kudos.json";
 import skillsMapper from "./skillsmapper.json";
+import badgeMapper from "./badgemapper.json"
+import profileMapper from "./profilemapper.json"
 
 import { ethers } from "ethers";
+import  contract from "./artifacts/BadgersProfile.json"
+import  contractNFT from "./artifacts/BadgersNFT.json"
+
 
 export const Home = () => {
   //for login
@@ -39,14 +46,366 @@ export const Home = () => {
 
   const [isKudoOpen, setIsKudoOpen] = useState(false);
 
+
+  const [profileName,setProfileName] = useState("tthx")
+  const [profilePicture,setProfilePicture] = useState(profilepic)
+
+  const [reviewingData,setReviewingData] = useState(reviewData)
+  const [kudosDataList,setkudosDataList] = useState(kudosData)
+
+  const PROFILE_CONTRACT_ADDRESS = "0xb3152bc3f1a792c64be1ebf590b1299270d57612"
+  const BADGERS_NFT_CONTRACT_ADDRESS="0xd7932f97a26807a1f635989ad9eb877ab0e046c8"
+
+  /* form getDetails */
+
+  const [receipent,setRecipent] = useState("")
+  const [badgeType,setBadgeType] = useState ("")
+  const [descriptionBadge, setDescriptionBadge] = useState("")
+  const [badgeImageURL,setBadgeImageURL] = useState("")
+
+  function updateBadges(event){
+    console.log(event.target.value)
+  }
+
+  function updateRecipentDetails(event){
+
+    setRecipent(event.target.value)
+
+  }
+
+  function updateBadgesType(event){
+
+    var receivedBadgeType = event.target.value
+    setBadgeType(receivedBadgeType)
+    var badgeURL = badgeMapper[receivedBadgeType]
+    setBadgeImageURL(badgeURL)
+  }
+
+  function updateDescription(event){
+    setDescriptionBadge(event.target.value)
+  }
+
+  function sendBadges(){
+    if(receipent==="" || badgeType==="" || descriptionBadge === ""){
+      console.log("fields empty")
+      return
+    }
+
+
+    console.log("receipent" + receipent)
+    console.log("badgeType" + badgeType)
+    console.log("descriptionBadge" + descriptionBadge)
+    console.log(badgeMapper[badgeType])
+    var badgeURL = badgeMapper[badgeType]
+    setBadgeImageURL(badgeURL)
+    console.log(badgeImageURL)
+
+    var toAddress = "0x13c3c91BFf390946C08E6992A62C00532c7b33f9"
+    var fromAddress = "0xa79db0f92327216f2fc196fde7376d5B1435A223"
+    var currentDate = Date.now()
+    sendBadgesNFT(toAddress,badgeType,badgeImageURL,descriptionBadge,fromAddress,currentDate)
+
+
+  }
+
   const toggleOpenKudo = () => {
     setIsKudoOpen(!isKudoOpen);
     console.log("kudostate" + isKudoOpen);
   };
 
+
+  async function getDetails(){
+
+
+    const abi = contract.abi;
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const erc20 = new ethers.Contract(PROFILE_CONTRACT_ADDRESS,abi,provider)
+    const signer = await provider.getSigner();
+    const signerAddress = await signer.getAddress();
+    const details = await erc20.userMap(signerAddress)
+    //console.log(details)
+    //console.log(details.name)
+    //console.log(details.image)
+    //console.log("profilename" + details.name)
+    if((details.name !=null && details.name!="")){
+      setProfileName(details.name)
+    }
+    if((details.image !=null && details.image!="")){
+      setProfilePicture(details.image)
+    }
+  }
+
+
+
+  function getYearsAndMonths(startDate, endDate) {
+  const ONE_MONTH = 1000 * 60 * 60 * 24 * 30;
+  const ONE_YEAR = ONE_MONTH * 12;
+
+  const diff = endDate.getTime() - startDate.getTime();
+  const years = Math.floor(diff / ONE_YEAR);
+  const months = Math.floor((diff % ONE_YEAR) / ONE_MONTH);
+
+  return { years, months };
+}
+
+  async function getBadgesDetails(){
+
+    try{
+
+    const abi = contractNFT.abi;
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const erc20 = new ethers.Contract(BADGERS_NFT_CONTRACT_ADDRESS,abi,provider)
+    const signer = await provider.getSigner();
+    const signerAddress = await signer.getAddress();
+    const details = await erc20.getTokensOfOwner(signerAddress)
+
+
+    setSoftSkillsList([]);
+    setHardSkillsList([]);
+      setkudosDataList([])
+    var promises = []
+    for(let i = 0; i<details.length;i++){
+      //console.log(details[i].toNumber())
+      getTokenDetails(details[i].toNumber(),erc20)
+      //console.log(i)
+
+      //console.log(JSON.stringify(kudosDataList))
+    }
+    //setBadgesWall()
+
+
+
+    //setBadgesWall()
+
+  }catch(e){
+    console.log(e.message)
+    return
+  }
+  }
+
+  async function getTokenDetails(tokenId,erc20) {
+
+      const details = await erc20.getTokenDetails(tokenId);
+      //console.log(JSON.stringify(details))
+      var type ="hard"
+
+      if (skillsMapper['hard'].includes(details[0])){
+        type="Hard"
+      }else{
+        type="Soft"
+      }
+
+      const badgeDetails = {
+        "kudosTitle": details[0],
+        "imageUrl": details[1],
+        "description": details[2],
+        "sender": details[3],
+        "type":type,
+        "tokenId":tokenId
+      }
+
+      //console.log(badgeDetails)
+      for(let i = 0; i<kudosDataList.length;i++){
+        if(kudosDataList[i].tokenId === tokenId){
+          //console.log("i stopped something")
+          return
+
+        }
+      }
+      setkudosDataList((prevList) => [...prevList, badgeDetails]);
+      //console.log(JSON.stringify(kudosDataList))
+
+      return
+  }
+
+  function removeDuplicates(kudoArr){
+    const uniqueIds = [];
+
+const unique = kudoArr.filter(element => {
+  const isDuplicate = uniqueIds.includes(element.tokenId);
+
+  if (!isDuplicate) {
+    uniqueIds.push(element.tokenId);
+
+    return true;
+  }
+
+  return false;
+});
+
+return unique
+  }
+
+  function setBadgesWall(){
+    setSoftSkillsList([]);
+    setHardSkillsList([]);
+    //Arrange kudos
+    var softSkills = [];
+    var hardSkills = [];
+    var uniqueBadges = removeDuplicates(kudosDataList)
+    for (var i = 0; i < uniqueBadges.length; i++) {
+      //console.log(JSON.stringify(kudosDataList[i]))
+
+      if (uniqueBadges[i].type === "Soft") {
+          //console.log(kudosDataList[i].type)
+        softSkills.push(uniqueBadges[i]);
+      } else hardSkills.push(uniqueBadges[i]);
+    }
+    //console.log("length"+kudosDataList.length)
+    //console.log("hardSkills"+ JSON.stringify(hardSkills))
+   //console.log("softSkills"+ JSON.stringify(softSkills))
+
+    //SoftSkillsSet
+    for (var i = 0; i < softSkills.length; i += 3) {
+      var firstSkill = softSkills[i];
+      var secondSkill = null;
+      var thirdSkill = null;
+      if (i + 1 < softSkills.length) {
+        secondSkill = softSkills[i + 1];
+      }
+      if (i + 2 < softSkills.length) {
+        thirdSkill = softSkills[i + 2];
+      }
+      addSoftSkills(firstSkill, secondSkill, thirdSkill);
+    }
+    //HardSkillsSet
+    for (var i = 0; i < hardSkills.length; i += 3) {
+      //console.log(JSON.stringify(hardSkills[i]));
+      var firstSkill = hardSkills[i];
+      var secondSkill = null;
+      var thirdSkill = null;
+      if (i + 1 < hardSkills.length) {
+        secondSkill = hardSkills[i + 1];
+      }
+      if (i + 2 < hardSkills.length) {
+        thirdSkill = hardSkills[i + 2];
+      }
+      addHardSkills(hardSkills[i], secondSkill, thirdSkill);
+    }
+  }
+  async function getExpertiseDetails(){
+
+
+    const abi = contract.abi;
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const erc20 = new ethers.Contract(PROFILE_CONTRACT_ADDRESS,abi,provider)
+    const signer = await provider.getSigner();
+    const signerAddress = await signer.getAddress();
+    const details = await erc20.getExperiencesOfUser(signerAddress)
+
+
+
+    var companies = details[0];
+    var titles = details[1];
+    var startDates = details[2];
+    var endDates = details[3];
+    var categories = details[4];
+    var images = details[5];
+    var descriptions = details[6];
+
+    let experiences = [];
+
+    for (let idx = 0; idx < companies.length; idx++) {
+
+      var diffYearMonth = getYearsAndMonths((new Date (parseInt(startDates[idx]* 1000))),new Date (parseInt(endDates[idx]* 1000)))
+      //console.log(diffYearMonth)
+      if(titles[idx] === "Software Engineer I" && companies[idx]=== "Netflix"){
+        continue
+      }
+      let experience = {
+          "company": companies[idx],
+          "title": titles[idx],
+          "startDate": (new Date (parseInt(startDates[idx]* 1000))).toISOString(),
+          "endDate": (new Date (parseInt(endDates[idx]* 1000))).toISOString(),
+          "skills": categories[idx].split(','),
+          "duration":"",
+          "imageUrl": images[idx],
+          "description": descriptions[idx],
+          "duration": diffYearMonth['years'] + " years " + diffYearMonth['months'] + " months"
+      };
+      experiences.push(experience);
+    }
+
+    //console.log(JSON.stringify(experiences))
+    if (experiences.length ===0){
+      return
+    }
+
+    setExpertiseList([]);
+    for (let i = 0; i < experiences.length; i++) {
+      //console.log("i called it" + i);
+      addExpertise(experiences[i]);
+    }
+
+
+    return experiences
+
+  }
+  async function getReviews(){
+
+
+    const abi = contract.abi;
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const erc20 = new ethers.Contract(PROFILE_CONTRACT_ADDRESS,abi,provider)
+    const signer = await provider.getSigner();
+    const signerAddress = await signer.getAddress();
+    const details = await erc20.getReviewsOfUser(signerAddress)
+    //console.log(details)
+    //console.log(details.name)
+    //console.log(details.image)
+
+    var reviewers = details[0];
+    var images = details[1];
+    var descriptions = details[2];
+
+    let reviews = [];
+    for (let idx = 0; idx < reviewers.length; idx++) {
+        let review = {
+            "reviewer": reviewers[idx],
+            "imageUrl": images[idx],
+            "description": descriptions[idx]
+        };
+        reviews.push(review);
+    }
+    if (reviews.length ===0){
+      return
+    }
+    //console.log(JSON.stringify(reviews) + "aaaaaa")
+    //setReviewingData(reviews)
+    setTestimonialList([]);
+    //views();
+
+    var addressToName = {}
+    for (var key in profileMapper){
+      addressToName[profileMapper[key]] = key
+    }
+
+    console.log(JSON.stringify(addressToName))
+
+    for (let i = 0; i < reviews.length; i++) {
+      //console.log("i called it" + i);
+      console.log(reviews[i].reviewer)
+      var shortenName = addressToName[reviews[i].reviewer]
+
+      if(shortenName != null && shortenName != "" && shortenName != undefined){
+        console.log(shortenName)
+
+        reviews[i].reviewer = shortenName
+      }
+
+      //console.log(reviews[i])
+
+      addTestimonial(reviews[i]);
+    }
+
+    return reviews;
+
+
+  }
+
   async function connectWallet() {
     const { ethereum } = window;
-    console.log(ethereum);
+    //console.log(ethereum);
     try {
       if (!ethereum) {
         console.log("No blockchain wallet was found");
@@ -59,7 +418,10 @@ export const Home = () => {
       setAccountAddress(accounts[0]);
       setConnected(true);
       setConnectedStatus("Connected")
-      console.log(accounts[0]);
+      //console.log(accounts[0]);
+      getDetails()
+
+
     } catch (error) {
       navigate("/login")
       console.log("Not Connected");
@@ -281,9 +643,9 @@ export const Home = () => {
     secondSoftSkill,
     thirdSoftSkill
   ) {
-    console.log("first" + firstSoftSkill);
-    console.log("second" + secondSoftSkill);
-    console.log("third" + thirdSoftSkill);
+    //console.log("first" + firstSoftSkill);
+    //console.log("second" + secondSoftSkill);
+    //console.log("third" + thirdSoftSkill);
     var element = "";
     if (
       firstSoftSkill != null &&
@@ -417,9 +779,9 @@ export const Home = () => {
     secondSoftSkill,
     thirdSoftSkill
   ) {
-    console.log("first" + firstSoftSkill);
-    console.log("second" + secondSoftSkill);
-    console.log("third" + thirdSoftSkill);
+    //console.log("first" + firstSoftSkill);
+    //console.log("second" + secondSoftSkill);
+    //console.log("third" + thirdSoftSkill);
     var element = "";
     if (
       firstSoftSkill != null &&
@@ -545,24 +907,31 @@ export const Home = () => {
   }
 
   useEffect(() => {
-    console.log(expertiseData);
+
+    setBadgesWall()
+  },[kudosDataList])
+  useEffect(() => {
+    //console.log(expertiseData);
     setExpertiseList([]);
     for (let i = 0; i < expertiseData.length; i++) {
-      console.log("i called it" + i);
+      //console.log("i called it" + i);
       addExpertise(expertiseData[i]);
     }
 
     setTestimonialList([]);
+    getReviews();
+    getExpertiseDetails();
+
     var receivedTestimonialList = reviewData.testimonial;
     for (let i = 0; i < receivedTestimonialList.length; i++) {
-      console.log("i called it" + i);
+      //console.log("i called it" + i);
       addTestimonial(receivedTestimonialList[i]);
     }
 
     setSkillsList([]);
-    var receivedSkillsList = reviewData.skills;
+    var receivedSkillsList = skillsData.skills;
     for (let i = 0; i < receivedSkillsList.length; i += 2) {
-      console.log("i called it" + i);
+      //console.log("i called it" + i);
       var firstSkill = receivedSkillsList[i];
       var secondSkill = null;
 
@@ -599,7 +968,7 @@ export const Home = () => {
     }
     //HardSkillsSet
     for (var i = 0; i < hardSkills.length; i += 3) {
-      console.log(JSON.stringify(hardSkills[i]));
+      //console.log(JSON.stringify(hardSkills[i]));
       var firstSkill = hardSkills[i];
       var secondSkill = null;
       var thirdSkill = null;
@@ -611,7 +980,7 @@ export const Home = () => {
       }
       addHardSkills(hardSkills[i], secondSkill, thirdSkill);
     }
-
+    getBadgesDetails()
     setExpertiseTitle(<b>Expertise & Skills</b>);
     setExpertiseTab(true);
     setKudosTab(false);
@@ -765,7 +1134,7 @@ export const Home = () => {
         </div>
         <div class="col-auto" align="right">
         <img
-          src={profilepic}
+          src={profilePicture}
           alt="mdo"
           width="32"
           height="32"
@@ -784,7 +1153,7 @@ export const Home = () => {
       <div class="profile p3 m3">
         <img
           class="rounded mx-auto d-block shadow profilepic"
-          src={profilepic}
+          src={profilePicture}
           alt="Logo"
           style={{ height: "150px" }}
         />
@@ -793,7 +1162,7 @@ export const Home = () => {
       <div class="medium-break"></div>
       <div class="d-flex justify-content-evenly">
         <p class="h5">
-          @<b>tthw</b>
+          @<b>{profileName}</b>
         </p>
       </div>
       <div class="small-break"></div>
@@ -906,27 +1275,30 @@ export const Home = () => {
                     type="email"
                     class="form-control"
                     id="recipientValue"
-                    aria-describedby="emailHelp"
+                    onChange={updateRecipentDetails}
                   />
                 </div>
 
                 <label for="exampleFormControlTextarea1" class="form-label">
                   Type of Skill
                 </label>
-                <select class="form-select" aria-label="Default select example">
+                <select class="form-select" aria-label="Default select example" onChange={updateBadges}>
                   <option disabled selected>Select Skill Type</option>
-                  <option value="hard">Hard</option>
+                  <option value="hard" >Hard</option>
                   <option value="soft">Soft</option>
                 </select>
                 <div class="medium-break"></div>
                 <label for="exampleFormControlTextarea1" class="form-label">
                   Badges Type
                 </label>
-                <select class="form-select" aria-label="Default select example">
+                <select class="form-select" aria-label="Default select example" onChange={updateBadgesType}>
                   <option disabled selected></option>
-                  <option value="Ruby Development">Ruby Development</option>
-                  <option value="Stakeholder Development">Stakeholder Development</option>
-                  <option value="Software Engineering">Software Engineering</option>
+                  <option value="C++">C++ Development</option>
+                  <option value="Creativity">Creativity</option>
+                  <option value="Diligent">Diligent</option>
+                  <option value="Java">Java Development</option>
+                  <option value="Proactive">Proactive</option>
+                  <option value="Python">Python Development</option>
                 </select>
                 <div class="medium-break"></div>
                 <div class="mb-3">
@@ -937,22 +1309,15 @@ export const Home = () => {
                     class="form-control"
                     id="exampleFormControlTextarea1"
                     rows="3"
+                    maxlength="120"
+                    onChange={updateDescription}
                   ></textarea>
                 </div>
 
-                <div class="mb-3">
-                  <label for="formFileSm" class="form-label">
-                    Badge Image (Optional)
-                  </label>
-                  <input
-                    class="form-control form-control-sm"
-                    id="formFileSm"
-                    type="file"
-                  />
-                </div>
+
                 <button
-                  type="buttom"
-                  onClick={toggleOpenKudo}
+                  type="button"
+                  onClick={sendBadges}
                   class="btn btn-primary"
                 >
                   Submit
