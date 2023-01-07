@@ -3,12 +3,10 @@ import { ethers } from "ethers";
 require("dotenv").config()
 const PROFILE_CONTRACT_ADDRESS = process.env.PROFILE_CONTRACT_ADDRESS;
 
-const contract = require("../../contracts/artifacts/BadgersProfile.json");  // TODO: Deploy contract via Remix and get artifact
+const contract = require("../../contracts/artifacts/BadgersProfile.json");
 const abi = contract.abi;
 
-const signer ; // TODO
-
-async function getContract() {
+async function getContract(signer) {
     const profileContract = new ethers.Contract(PROFILE_CONTRACT_ADDRESS, abi, signer);
     return profileContract;
 }
