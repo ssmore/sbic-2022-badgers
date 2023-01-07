@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-contract BadgersProfile {
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+contract BadgersProfile is Ownable {
 
     struct Review {
         address reviewer;
@@ -39,11 +41,35 @@ contract BadgersProfile {
         userMap[msg.sender] = user;
     }
 
+    function createUserProfile(address userAddress, string memory displayName, string memory imageURI) public onlyOwner
+    {
+        User storage user = userMap[userAddress];
+        require(bytes(user.name).length == 0, "USER_EXISTS");
+
+        user.name = displayName;
+        user.image = imageURI;
+        userMap[userAddress] = user;
+    }
+
     function addExperience(string memory company, string memory title, uint256 startDate, 
                             uint256 endDate, string memory category, string memory image, 
                             string memory description) public 
     {
         User storage user = userMap[msg.sender];
+        require(bytes(user.name).length != 0, "USER_NOT_EXIST");
+
+        Experience memory experience = Experience(company, title, startDate, endDate, category, new uint256[](0), image, description);
+        
+        Experience[] storage experiences = user.experiences;
+        experiences.push(experience);
+        user.experiences = experiences;
+    }
+
+    function addUserExperience(address userAddress, string memory company, string memory title, 
+                                uint256 startDate, uint256 endDate, string memory category, 
+                                string memory image, string memory description) public onlyOwner
+    {
+        User storage user = userMap[userAddress];
         require(bytes(user.name).length != 0, "USER_NOT_EXIST");
 
         Experience memory experience = Experience(company, title, startDate, endDate, category, new uint256[](0), image, description);
