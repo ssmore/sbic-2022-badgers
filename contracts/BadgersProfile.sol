@@ -153,6 +153,18 @@ contract BadgersProfile is Ownable {
         reviews.push(review);
         user.reviews = reviews;
     }
+    
+    function addUserReview(address reviewer, address recipient, string memory image, string memory description) public onlyOwner
+    {
+        User storage user = userMap[recipient];
+        require(bytes(user.name).length != 0, "USER_NOT_EXIST");
+
+        Review memory review = Review(reviewer, image, description);
+        
+        Review[] storage reviews = user.reviews;
+        reviews.push(review);
+        user.reviews = reviews;
+    }
 
     function getReviewsOfUser(address userAddress) public view
         returns (address[] memory reviewers, string[] memory images, string[] memory descriptions)
