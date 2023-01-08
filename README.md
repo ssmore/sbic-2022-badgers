@@ -1,4 +1,4 @@
-# sbic-2022-dexperts
+# Badgers
 
 **Installation**
 
