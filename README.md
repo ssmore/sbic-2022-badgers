@@ -1,4 +1,6 @@
-# Badgers
+# <img align="center" src="./images/badgers_logo.png" width="100"/>  Badgers 
+
+
 
 ## Summary ##
 
@@ -41,7 +43,7 @@ The Badges Wall is essentially the blank canvas on which the subject’s badges 
 
 There are two types of Badgers badges - namely Permanent Badges and Refreshable Badges. 
 
-<<insert image>>
+<img src="./images/badges_table.png" width=750/>
 
 In the Permanent Badges category, there could be various types of issuers. Obvious ones would be educational institutions which can issue official badges that are tied to permanent accreditations or degrees which they confer. Another possibility would be companies which can issue badges to celebrate certain achievements such as long service or the winning of a hackathon. These Permanent Badges are usually issued by legitimate organizations, and represent a possible monetization lever for Badgers.
 
