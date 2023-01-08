@@ -1,10 +1,10 @@
 # Badgers
 
-**Summary**
+##Summary##
 
 Badgers is a decentralized application that allows users to issue and display badges which serve as indicators of professional skills and experiences. Badgers aims to create a future of work where only skills matter. By leveraging blockchain technology, Badgers hopes to create reliable, transparent and dynamic professional profiles for the workers of tomorrow - helping them get the best jobs and opportunities in a truly unbiased manner.
 
-**Installation**
+##Installation##
 
 1. Clone the repo
 2. Install NPM packages
@@ -23,9 +23,9 @@ npm start
 
 5. Navigate to ```localhost:3000``` to utilize the app
 
-**Badgers Overview**
+##Badgers Overview##
 
-Product Overview 
+###Product Overview ###
 
 Badgers is a decentralized application (dApp) which facilitates the public display of NFTs with the aim of creating a visual profile of users’ professional lives. Badgers has four key features - namely Badgers Profile, Badges Wall, Badgers Reviews and Badgers Analytics.
 
