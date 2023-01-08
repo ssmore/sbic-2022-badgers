@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/static/css/main.5ce2a2ba.css",
+    "main.js": "/static/js/main.e4dd4ea8.js",
+    "static/js/787.3bfcc053.chunk.js": "/static/js/787.3bfcc053.chunk.js",
+    "static/media/dexperts-banner.png": "/static/media/dexperts-banner.3caa0f6b769352a8f5c8.png",
+    "static/media/restricted_content.png": "/static/media/restricted_content.529262739a6cd503a19f.png",
+    "static/media/people.png": "/static/media/people.9759beccb30221add3cf.png",
+    "static/media/badges_logo.png": "/static/media/badges_logo.74c6876cb57724709930.png",
+    "static/media/mayc.png": "/static/media/mayc.bc25eb8f8b3ebeef82a1.png",
+    "static/media/error.png": "/static/media/error.d6eb6508b54bf2014ce8.png",
+    "static/media/completed.png": "/static/media/completed.d5a4dff89a9eceb45a6a.png",
+    "index.html": "/index.html",
+    "main.5ce2a2ba.css.map": "/static/css/main.5ce2a2ba.css.map",
+    "main.e4dd4ea8.js.map": "/static/js/main.e4dd4ea8.js.map",
+    "787.3bfcc053.chunk.js.map": "/static/js/787.3bfcc053.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5ce2a2ba.css",
+    "static/js/main.e4dd4ea8.js"
+  ]
+}
