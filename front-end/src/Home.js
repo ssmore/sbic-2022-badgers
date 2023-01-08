@@ -1272,7 +1272,7 @@ return unique
                 class="btn btn-primary float-end"
                 onClick={toggleOpenKudo}
               >
-                Send Badges
+                Send Badge
               </button>
             </div>
           </div>
@@ -1328,7 +1328,7 @@ return unique
                 </div>
               </div>
 
-              <h5 class="modal-title"> Send Badgers</h5>
+              <h5 class="modal-title"> Send Badge</h5>
               <hr />
               <form>
                 <div class="mb-3">
@@ -1346,13 +1346,13 @@ return unique
 
 
                 <label for="exampleFormControlTextarea1" class="form-label">
-                  Badges Type
+                  Badge Type
                 </label>
                 <select class="form-select" aria-label="Default select example" onChange={updateBadgesType}>
                   <option disabled selected></option>
                   <option value="C++">C++ Development</option>
                   <option value="Creativity">Creativity</option>
-                  <option value="Diligent">Diligent</option>
+                  <option value="Diligent">Diligence</option>
                   <option value="Java">Java Development</option>
                   <option value="Proactive">Proactive</option>
                   <option value="Python">Python Development</option>

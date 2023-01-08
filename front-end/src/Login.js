@@ -205,25 +205,25 @@ export const Login = () =>{
     </div>
       <div class="col-7">
       <div class="row">
-      <h5>Why not, join us today?</h5>
+      <h1>Join us today!</h1>
 
       </div>
       <div class="row">
-      <div class="col-5">
+      <div class="col">
     <div class="medium-break"></div>
       <button
         type="button"
-        class="btn btn-primary btn-sm"
+        class="btn btn-primary btn"
         onClick={toggleResgistrationTab}
       >
-        Register
+        Create an account
       </button>
       </div>
       </div>
 
       </div>
 
-    <p><small> <i>If you do not have a metamask plugin or unsure what and how to use it. Click <a href="https://consensys.net/blog/metamask/how-to-use-the-browser-buy-eth-and-send-transactions-on-metamask-mobile/">here</a> for an interesting article to get you started. </i></small></p>
+    <p><small> <i>If you do not have a MetaMask plugin or if you are unsure about how to use it, click <a href="https://consensys.net/blog/metamask/how-to-use-the-browser-buy-eth-and-send-transactions-on-metamask-mobile/">here</a> to get you started. </i></small></p>
     </div>
 
 
@@ -244,7 +244,7 @@ export const Login = () =>{
       >
         <svg class="bi" width="30" height="24"></svg>
       </a>
-      <span class="mb-3 mb-md-0 text-muted">&copy; Dexperts</span>
+      <span class="mb-3 mb-md-0 text-muted">&copy; Badgers</span>
     </div>
 
     <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
@@ -282,7 +282,7 @@ export const Login = () =>{
     </div>
 
 
-    <h5 class="modal-title"> Registration</h5>
+    <h5 class="modal-title"> Create an Account</h5>
 
     <hr />
     {isAlert ? (<div class="alert alert-danger" role="alert">
@@ -296,7 +296,7 @@ export const Login = () =>{
           <h6>Registration Name</h6>
 
 
-          <small><i> This would be your display name</i> </small>
+          <small><i> This will be your display name (You may choose a pseudonym name if you wish to remain anonymous)</i> </small>
 
         </label>
         <input
