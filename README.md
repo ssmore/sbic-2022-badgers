@@ -2,7 +2,7 @@
 
 Badgers is a decentralized application that allows users to issue and display badges which serve as indicators of professional skills and experiences. Badgers aims to create a future of work where only skills matter. By leveraging blockchain technology, Badgers hopes to create reliable, transparent and dynamic professional profiles for the workers of tomorrow - helping them get the best jobs and opportunities in a truly unbiased manner.
 
-Try it out here: 54.254.176.251:3000
+Try it out [here](http://54.254.176.251:3000/)
 
 ## Installation ##
 
