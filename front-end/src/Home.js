@@ -13,7 +13,7 @@ import errorImg from "./error.png"
 
 //data points
 import expertiseData from "./expertise.json";
-import reviewData from "./reviews.json";
+import reviewData from "./review.json";
 import skillsData from "./skills.json";
 import kudosData from "./kudos.json";
 import skillsMapper from "./skillsmapper.json";
@@ -522,8 +522,8 @@ return unique
   }
 
   async function addSkills(firstSkill, secondSkill) {
-    //console.log(JSON.stringify(firstSkill))
-    //console.log(JSON.stringify(secondSkill))
+    console.log(JSON.stringify(firstSkill))
+    console.log(JSON.stringify(secondSkill))
     if (secondSkill != null) {
       var element = (
         <div class="row">

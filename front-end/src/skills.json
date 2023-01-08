@@ -1,24 +1,24 @@
 {
 
   "skills":[
-  {
-    "type":"Powerpoint",
-    "imageUrl": "https://venturebeat.com/wp-content/uploads/2016/06/netflix-logo.png?w=1200&strip=all",
-    "value":"100%",
-    "reviews":6
-  },
-  {
-    "type":"Presentation",
-    "imageUrl": "https://venturebeat.com/wp-content/uploads/2016/06/netflix-logo.png?w=1200&strip=all",
-    "value":"75%",
-    "reviews":9
-  },
-  {
-    "type":"Ruby",
-    "imageUrl": "https://venturebeat.com/wp-content/uploads/2016/06/netflix-logo.png?w=1200&strip=all",
-    "value":"66%",
-    "reviews":9
-  }
+    {
+      "type":"Powerpoint",
+      "imageUrl": "https://gateway.pinata.cloud/ipfs/QmXHqn2RxKK8R5qxJbmmrGm7v2SERZ4B1zvkxVpKDR2AAJ/powerpoint.png",
+      "value":"100%",
+      "reviews":9
+    },
+    {
+      "type":"Presentation",
+      "imageUrl": "https://gateway.pinata.cloud/ipfs/QmXHqn2RxKK8R5qxJbmmrGm7v2SERZ4B1zvkxVpKDR2AAJ/presentation.png",
+      "value":"75%",
+      "reviews":9
+    },
+    {
+      "type":"Ruby",
+      "imageUrl": "https://gateway.pinata.cloud/ipfs/QmXHqn2RxKK8R5qxJbmmrGm7v2SERZ4B1zvkxVpKDR2AAJ/ruby.png",
+      "value":"66%",
+      "reviews":9
+    }
 
 ]
 }

@@ -62,6 +62,7 @@ export const Login = () =>{
   };
 
   async function addProfile(registrationName,registrationImage){
+    try{
     const abi = contract.abi;
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     const signer = provider.getSigner();
@@ -72,7 +73,7 @@ export const Login = () =>{
       imageURI: registrationImage
     }
 
-    try{
+
       const profileCreateTxn = await contractProfile.createProfile(registrationName,registrationImage).then(transaction =>{
         console.log('View on Etherscan at: https://goerli.etherscan.io/tx/' + transaction.hash)
         setStatusLink("https://goerli.etherscan.io/tx/" + transaction.hash)
