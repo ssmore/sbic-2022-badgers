@@ -57,6 +57,8 @@ A second section in the Badgers Reviews feature is the Skills section. This is w
  
 The final feature, and the only paid feature in the Badgers minimum viable product, is Badgers Analytics. Badgers Analytics is a dashboard consisting of data views and visualizations which can allow a paying user (e.g., a recruiter or hiring manager) a detailed view of the entire badging history of the subject. Some example views could include the most frequently refreshed token during a specific time period with a certain employer, prematurely expired tokens, skills rating inputs over time (from the question prompts which enable the tokens to refresh), and many others. These data views help provide greater depth to the subject’s professional profile than would be possible with the static view of the Badges Wall. These insights would, of course, not be required for most use cases. They would, however, be of immense value for a company when making final assessments of a candidate before offering a job. The subject would also be able to access these views (for free) and use it for his/her developmental discussions with his/her superior.
 
+## How to use Badgers ##
+[![Video on how Badgers works](https://img.youtube.com/vi/rj0GIhE2Kb8/maxresdefault.jpg)](https://youtu.be/rj0GIhE2Kb8)
 
 
 
